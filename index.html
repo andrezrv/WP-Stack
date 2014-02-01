@@ -1,75 +1,273 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <title>WP Stack by andrezrv</title>
 
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <title>WP Stack by andrezrv</title>
   </head>
-
   <body>
-    <header>
-      <div class="inner">
+    <div class="wrapper">
+      <header>
         <h1>WP Stack</h1>
-        <h2>A toolkit for creating professional WordPress deployments</h2>
-        <a href="https://github.com/andrezrv/stage-wp" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
+        <p>A toolkit for creating professional WordPress deployments</p>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h3>
-<a name="professional-wordpress-deployments" class="anchor" href="#professional-wordpress-deployments"><span class="octicon octicon-link"></span></a>Professional WordPress Deployments</h3>
+        <p class="view"><a href="https://github.com/andrezrv/stage-wp">View the Project on GitHub <small>andrezrv/stage-wp</small></a></p>
 
-<p>Run WordPress like a pro:</p>
+
+        <ul>
+          <li><a href="https://github.com/andrezrv/stage-wp/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/andrezrv/stage-wp/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/andrezrv/stage-wp">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="stage-wp" class="anchor" href="#stage-wp"><span class="octicon octicon-link"></span></a>Stage WP</h1>
+
+<p>A toolkit for creating professional <a href="http://wordpress.org/">WordPress</a> deployments, forked from Mark Jaquith's <a href="http://github.com/markjaquith/WP-Stack">WP-Stack</a>. It uses Capistrano as a code deployment system, and offers a complete set of tasks for you to scale your WordPress project to different servers, both from local and remote environments.</p>
+
+<p><strong>Current stable version</strong>: <a href="https://github.com/andrezrv/stage-wp/tree/1.0">1.0</a></p>
+
+<h2>
+<a name="why-do-you-need-this" class="anchor" href="#why-do-you-need-this"><span class="octicon octicon-link"></span></a>Why do you need this?</h2>
+
+<p>Because WordPress runs professional sites, and you should have a professional deployment tool to go along with it. Stage WP is a toolkit that helps you manage that.</p>
+
+<h2>
+<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
+
+<h3>
+<a name="assumptions-about-your-workflow" class="anchor" href="#assumptions-about-your-workflow"><span class="octicon octicon-link"></span></a>Assumptions about your workflow</h3>
 
 <ul>
-<li>Site code in a Git repository (hint: start with <a href="https://github.com/markjaquith/WordPress-Skeleton">WordPress Skeleton</a>)</li>
-<li>Test in a staging environment (with separate DB and files)</li>
-<li>Deploy with Capistrano</li>
-</ul><h3>
-<a name="useful-drop-ins" class="anchor" href="#useful-drop-ins"><span class="octicon octicon-link"></span></a>Useful Drop-ins</h3>
+<li>You mantain your code under a version control system (like <a href="http://git-scm.com/">Git</a>). Stage WP works specially well with <a href="http://github.com/andrezrv/wordpress-bareboner/">WordPress Bareboner</a>.</li>
+<li>You develop locally before deploying your code.</li>
+<li>Ideally, you have a staging environment to test changes before they go to production.</li>
+<li>Ideally, you use a CDN for static assets.</li>
+<li>You deploy your code from a local environment.</li>
+</ul><p>Additionally, you should be able to easily scale out to multiple web servers, if needed.</p>
+
+<h3>
+<a name="capistrano" class="anchor" href="#capistrano"><span class="octicon octicon-link"></span></a>Capistrano</h3>
+
+<p>Capistrano is a code deployment tool. When you have code that is ready to go "live", this is what we you're gonna use to do it.</p>
+
+<h3>
+<a name="setting-up-your-local-system" class="anchor" href="#setting-up-your-local-system"><span class="octicon octicon-link"></span></a>Setting Up Your Local System</h3>
+
+<ol>
+<li>Create a <code>deploy</code> user on each of your remote web servers (staging and production). This will be the user that is going to perform all the deployment actions on your remote systems.
 
 <ul>
-<li>CDN rewriter</li>
-<li>Multisite uploads rewriter (for direct serving of uploads)</li>
-<li>More to come!</li>
-</ul><h3>
-<a name="future" class="anchor" href="#future"><span class="octicon octicon-link"></span></a>Future</h3>
-
-<ul>
-<li>Puppet manifest</li>
-<li>Vagrant support</li>
+<li><code>addgroup deploy</code></li>
+<li>
+<code>adduser --system --shell /bin/bash --ingroup deploy --disabled-password --home /home/deploy deploy</code>
+If you want a user with another name, it must be the same as the one you set for <code>:user</code> within <code>/config/config.rb</code>.</li>
 </ul>
-        </section>
+</li>
+<li>Make sure that <code>deploy</code> can pull down your site repo code with <code>git clone $your_repo</code> from all your servers.</li>
+<li>Create (if you don't have one) and upload an SSH key to the list of authorized keys for the <code>deploy</code> user in each of your web servers.
 
-        <aside id="sidebar">
-          <a href="https://github.com/andrezrv/stage-wp/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/andrezrv/stage-wp/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+<ul>
+<li><code>ssh-keygen</code></li>
+<li><code>cat ~/.ssh/id_rsa.pub | ssh deploy@$your_server "cat - &gt;&gt; ~/.ssh/authorized_keys"</code></li>
+</ul>
+</li>
+<li>
+<a href="http://rubygems.org/pages/download">Install RubyGems</a>.
 
-          <p class="repo-owner"><a href="https://github.com/andrezrv/stage-wp"></a> is maintained by <a href="https://github.com/andrezrv">andrezrv</a>.</p>
+<ul>
+<li><code>sudo apt-get install rubygems</code></li>
+</ul>
+</li>
+<li>Install Capistrano and extras.
 
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+<ul>
+<li><code>sudo gem install capistrano -v 2.15.5</code></li>
+<li><code>sudo gem install capistrano-ext railsless-deploy</code></li>
+</ul>
+</li>
+</ol><h3>
+<a name="setting-up-stage-wp" class="anchor" href="#setting-up-stage-wp"><span class="octicon octicon-link"></span></a>Setting Up Stage WP</h3>
+
+<ol>
+<li>Check out Stage WP somewhere on your local system. 
+
+<ul>
+<li><code>git clone git@github.com:andrezrv/Stage-WP.git /srv/www/website/stage-wp</code></li>
+</ul>
+</li>
+<li>Customize and rename <code>/config/{config|local|production|staging}-sample.rb</code>
+</li>
+<li>Make sure your remote <code>:production_deploy_to</code> and <code>:staging_deploy_to</code> paths exist and are owned by the deploy user. 
+
+<ul>
+<li><code>chown -R deploy:deploy /path/to/your/deployment</code></li>
+</ul>
+</li>
+<li>Go to your Stage WP directory and run <code>cap deploy:setup</code> to setup the initial <code>shared</code> and <code>releases</code> directories.</li>
+</ol><h3>
+<a name="deploying" class="anchor" href="#deploying"><span class="octicon octicon-link"></span></a>Deploying</h3>
+
+<ol>
+<li>
+<code>cd</code> to your Stage WP directory.</li>
+<li>Run <code>cap production deploy</code> (to deploy to staging, use <code>cap staging deploy</code>).</li>
+</ol><h3>
+<a name="rolling-back" class="anchor" href="#rolling-back"><span class="octicon octicon-link"></span></a>Rolling Back</h3>
+
+<p>If something went wrong with your deployment, you can always go back to the previous version:</p>
+
+<ol>
+<li>
+<code>cd</code> to your Stage WP directory.</li>
+<li>Run <code>cap deploy:rollback</code>
+</li>
+</ol><h3>
+<a name="about-stages" class="anchor" href="#about-stages"><span class="octicon octicon-link"></span></a>About Stages</h3>
+
+<p>There are three "stages": local, production and staging. The first one is your development environment. The other two should be remote systems, and can be completely different servers, or different paths on the same set of servers.</p>
+
+<p>Stage WP, unlike WP-Stack, is meant to be used from a development environment, performing actions on remote servers from a local system.</p>
+
+<p>You can still use it in a remote system, like your production or staging servers, but this comes with a trick: if Stage WP is running on staging or production, your local stage will be the same as your remote one.</p>
+
+<h3>
+<a name="database-tasks" class="anchor" href="#database-tasks"><span class="octicon octicon-link"></span></a>Database Tasks</h3>
+
+<p>With Stage WP, you can create your database, backup, restore and move mysqldumps from the local stage to production and staging with the help of the following commands:</p>
+
+<ul>
+<li>
+<code>cap {staging|production} db:init</code>: Initializes the WordPress database in a remote stage.</li>
+<li>
+<code>cap {local|staging} db:sync</code>: Syncs the local or staging database and uploads from production.</li>
+<li>
+<code>cap {local|staging|production} db:backup</code>: Performs a mysqldump of your WordPress database and saves it within the selected stage.</li>
+<li>
+<code>cap {local|staging|production} db:restore</code>: Restores the WordPress database from a backup stored in the selected stage.</li>
+<li>
+<code>cap {staging|production} db:pull</code>: Downloads a database backup from the selected stage and stores it locally.</li>
+<li>
+<code>cap {staging|production} db:push</code>: Uploads a local database backup to the selected stage.</li>
+</ul><h3>
+<a name="managing-shared-files" class="anchor" href="#managing-shared-files"><span class="octicon octicon-link"></span></a>Managing Shared Files</h3>
+
+<p>You can synchronize your shared files both from local to remote stages and from remote stages to local with the help of the following commands:</p>
+
+<ul>
+<li>
+<code>cap {staging|production} shared:pull</code>: Synchronizes your local shared files from the selected stage.</li>
+<li>
+<code>cap {staging|production} shared:push</code>: Synchronizes your selected stage shared files from local.</li>
+</ul><h3>
+<a name="full-synchronization" class="anchor" href="#full-synchronization"><span class="octicon octicon-link"></span></a>Full Synchronization</h3>
+
+<p>You can synchronize both database and shared files from production to staging or local using <code>cap {local|staging} db:sync</code>.</p>
+
+<h3>
+<a name="some-other-useful-tasks" class="anchor" href="#some-other-useful-tasks"><span class="octicon octicon-link"></span></a>Some Other Useful Tasks</h3>
+
+<p>If you're using <a href="http://github.com/andrezrv/wordpress-bareboner/">WordPress Bareboner</a>, you can perform remote backup and maintenance tasks with the following commands:</p>
+
+<ul>
+<li>
+<code>cap {staging|production} util:backup_application</code>: Zips and saves all application files to <code>:application_backup_path</code>.</li>
+<li>
+<code>cap {staging|production} util:backup_db</code>: Performs a mysqldump of the WordPress database and saves it to <code>:wpdb[stage][:backups_dir]</code>.</li>
+<li>
+<code>cap {staging|production} util:switch</code>: Switches the state of your site from active to maintenance and vice versa.</li>
+<li>
+<code>cap {staging|production} util:full_backup</code>: Performs a full backup (files and database).</li>
+</ul><p>Yet more useful tasks:</p>
+
+<ul>
+<li>
+<code>cap {local|staging|production} nginx:restart</code>: Restarts NGINX.</li>
+<li>
+<code>cap {local|staging|production} phpfpm:restart</code>: Restarts PHP-FPM.</li>
+<li>
+<code>cap {local|staging|production} memcached:restart</code>: Restarts Memcached.</li>
+<li>
+<code>cap {local|staging|production} memcached:upload</code>: Updates the pool of Memcached servers.</li>
+</ul><h2>
+<a name="wordpress-must-use-plugins" class="anchor" href="#wordpress-must-use-plugins"><span class="octicon octicon-link"></span></a>WordPress Must Use Plugins</h2>
+
+<p>Must Use plugins are WordPress plugins that usually live into the <code>mu-plugins</code> directory. They are autoloaded — no need to activate them. Stage WP comes with a number of these plugins for your use:</p>
+
+<h3>
+<a name="stage-wp-cdn" class="anchor" href="#stage-wp-cdn"><span class="octicon octicon-link"></span></a>Stage WP CDN</h3>
+
+<p>This is a very simple CDN plugin. Simply configure the constant <code>WP_STACK_CDN_DOMAIN</code> in your <code>wp-config.php</code> or hook in and override the <code>wp_stack_cdn_domain</code> option. Provide a domain name only, like <code>static.example.com</code>. The plugin will look for static file URLs on your domain and repoint them to the CDN domain. Original credits go to <a href="http://github.com/markjaquith">Mark Jaquith</a>.</p>
+
+<h3>
+<a name="stage-wp-multisite-uploads" class="anchor" href="#stage-wp-multisite-uploads"><span class="octicon octicon-link"></span></a>Stage WP Multisite Uploads</h3>
+
+<p>The way WordPress Multisite serves uploads is not ideal. It streams them through a PHP file. Professional sites should not do this. This plugin allows one NGINX rewrite rule to handle all uploads, eliminating the need for PHP streaming. It uses the following URL scheme for uploads: <code>{scheme}://{domain}/wp-files/{blog_id}/</code>. By inserting the <code>$blog_id</code>, one rewrite rule can make sure file requests go to the correct blog. Original credits go to <a href="http://github.com/markjaquith">Mark Jaquith</a>.</p>
+
+<p><strong>Note:</strong> You will need to implement this NGINX rewrite rule for this to work:</p>
+
+<p><code>rewrite ^/wp-files/([0-9]+)/(.*)$ /wp-content/blogs.dir/$1/files/$2;</code></p>
+
+<h3>
+<a name="stage-wp-manual-db-upgrades" class="anchor" href="#stage-wp-manual-db-upgrades"><span class="octicon octicon-link"></span></a>Stage WP Manual DB Upgrades</h3>
+
+<p>Normally, WordPress redirects <code>/wp-admin/</code> requests to the WordPress database upgrade screen. On large sites, or sites with a lot of active authors, this may not be desired. This drop-in prevents the automatic redirect and instead lets you manually go to <code>/wp-admin/upgrade.php</code> to upgrade a site.</p>
+
+<h2>
+<a name="assumptions-made-about-wordpress" class="anchor" href="#assumptions-made-about-wordpress"><span class="octicon octicon-link"></span></a>Assumptions Made About WordPress</h2>
+
+<p>If you're not using <a href="http://github.com/andrezrv/wordpress-bareboner/">Wordpress Bareboner</a>, you should be aware of these assumptions:</p>
+
+<ol>
+<li>Your application path is defined in <code>:application_path</code>, inside <code>/config/config.rb</code>
+</li>
+<li>Your <code>wp-config.php</code> file must exist in the root of your application path.</li>
+<li>Stage WP replaces the following "stubs":
+
+<ul>
+<li>
+<code>%%DB_NAME%%</code> — Database name.</li>
+<li>
+<code>%%DB_HOST%%</code> — Database host.</li>
+<li>
+<code>%%DB_USER%%</code> — Database username.</li>
+<li>
+<code>%%DB_PASSWORD%%</code> — Database password.</li>
+<li>
+<code>%%WP_STAGE%%</code> – will be <code>production</code> or <code>staging</code> after deploy.</li>
+</ul>
+</li>
+<li>Stage WP uses the constants <code>WP_STAGE</code> (which should be set to <code>'%%WP_STAGE%%'</code>) and <code>STAGING_DOMAIN</code>, which should be set to the domain you want to use for staging (something like <code>staging.example.com</code>).</li>
+</ol><h2>
+<a name="extending" class="anchor" href="#extending"><span class="octicon octicon-link"></span></a>Extending</h2>
+
+<p>You have the following options to add your own functionlity without altering the flow of the repository:</p>
+
+<ul>
+<li>Add your custom configurations to <code>/config/config.rb</code>, <code>/config/local-config.rb</code>, <code>/config/production-config.rb</code> and <code>/config/staging-config.rb</code>, since they won't be tracked by Git.</li>
+<li>Rename <code>/Customfile-sample</code> to <code>/Customfile</code>, if you want to hook <code>/Capfile</code>.</li>
+<li>Rename <code>/lib/custom-tasks-sample.rb</code> to <code>/lib/custom-tasks.rb</code>, if you want to add extra tasks.</li>
+<li>Rename <code>/lib/custom-hooks-sample.rb</code> to <code>/lib/custom-hooks.rb</code>, if you want to add extra hooks.</li>
+<li>Put anything you want into <code>/custom</code>. Git won't track those files.</li>
+</ul><h3>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h3>
+
+<p>If you feel like you want to help this project by adding something you think useful, you can make your pull request against the master branch :)</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/andrezrv">andrezrv</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
     </div>
-
-  
+    <script src="javascripts/scale.fix.js"></script>
+    
   </body>
 </html>
